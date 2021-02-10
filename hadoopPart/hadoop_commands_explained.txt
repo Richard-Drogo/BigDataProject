@@ -1,0 +1,38 @@
+Utilisateurs : 
+root	hadoop		(A changer lorsque nous sommes en production)
+awsuser	BigData2021	(Après l'étape [3])
+
+// PARTIE CONFIGURATION : A ne faire qu'une fois théoriquement
+[1] Configuration de la connexion entre le PC local et Hadoop
+	* // Aller dans le fichier suivant et ajouter la ligne ci-dessous. Dossier : c:\Windows\System32\drivers\etc\hosts
+		* {IP-Address} localhost sandbox-hdp.hortonworks.com sandbox-hdf.hortonworks.com
+		* // Avec {IP-Address} représentant l'@IP de la VM Hadoop.
+
+[2] Création d'une connexion SSH
+	* ssh root@sandbox-hdp.hortonworks.com -p 2222	// Connexion en SSH à la VM
+
+[3] Mise en place de l'architecture Hadoop
+	* mkdir /data	// hadoop fs -mkdir /data	// hadoop fs -mkdir hdfs://example.com/user/hadoop/data
+	* chmod 774 /data	// Le propriétaire et le groupe a tous les droits, les autres uniquement en lecture.
+	* adduser awsuser
+	* passwd BigData2021	// Création d'un utilisateur pour récupérer les données depuis AWS.
+
+// PARTIE UPLOAD DES DONNÉES [Local -> Hadoop]: A faire à chaque fois que les données d'entrées changent.
+[4] Transfert des données initiales
+	* // Se placer dans le dossier local où se trouvent les fichiers "data.json", "categories_string.csv" et "label.csv"
+	* scp -P 2222 data.json /data	// scp -P 2222 data.json root@sandbox-hdp.hortonworks.com:/data
+	* scp -P 2222 categories_string.csv /data
+	* scp -P 2222 label.csv /data
+	* chmod 774 /data/data.json
+	* chmod 774 /data/categories_string.csv
+	* chmod 774 /data/label.csv
+
+// PARTIE RÉCUPÉRATION DES DONNÉES DEPUIS Hadoop SUR MACHINE LOCALE : [Hadoop -> Local]: A faire à chaque fois que les données d'entrées change. Donc qu'UNE SEULE FOIS dans notre cas comme nos données d'entrées ne changent jamais)
+[5] Récupération des données à partir d'AWS depuis 
+	* // Si la machine locale est différente de la première, faire la configuration [1].
+	* // Connexion en SSH Avec le compte utilisateur
+	* ssh awsuser@sandbox-hdp.hortonworks.com -p 2222	// Connexion en SSH à la VM
+	* // Récupération des données
+	* scp -P 2222 /data/data.json <repertoire_destination>
+	* scp -P 2222 /data/categories_string.csv <repertoire_destination>
+	* scp -P 2222 /data/label.csv <repertoire_destination>

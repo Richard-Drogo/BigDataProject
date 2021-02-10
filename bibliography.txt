@@ -1,0 +1,3 @@
+https://www.cloudera.com/tutorials/learning-the-ropes-of-the-hdp-sandbox.html
+https://www.cloudera.com/tutorials/sandbox-deployment-and-install-guide/3.html
+https://www.cloudera.com/tutorials/getting-started-with-hdp-sandbox/1.html
