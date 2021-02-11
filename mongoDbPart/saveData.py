@@ -20,6 +20,8 @@ RESULTS_RELATIVE_PATH = "results.csv" # With this value, we assume that the resu
 RATES_COLUMN_NAME = "Rates"
 MESSAGE_ERROR = "Something got wrong..."
 MESSAGE_SUCCESS = "Success."
+
+ROUNDED_AT_DECIMAL = 4
 # END: CONFIGURATION
 
 
@@ -27,6 +29,8 @@ MESSAGE_SUCCESS = "Success."
 success = False
 with open(RESULTS_RELATIVE_PATH) as resultFile:
     resultsDf = pd.read_csv(resultFile)     # We read the file
+    resultsDf[resultsDf.columns[1:resultsDf.columns.size]] = resultsDf[resultsDf.columns[1:resultsDf.columns.size]] * 100
+    resultsDf = round(resultsDf,ROUNDED_AT_DECIMAL)
     
     # We create a list in which we store for each row, the corresponding JSON document.
     matchingResults = []
