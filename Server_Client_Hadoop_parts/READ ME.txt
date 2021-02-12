@@ -1,0 +1,55 @@
+READ ME Hadoop Side:
+In this rep, there 5 su rep :
+	> 2 are used to stock python scipts for running server/client sides : clientFiles/ & serverFiles/. Both of them have READ ME.txt
+	> 2 others are used  stock data to import/export from/to the Hadoop VM : import/ export/
+		> import/ : stock imported data from Hadoop vm (import date by running import_data.sh ip_hadoop)
+		> export/ : stock data to export to the hadoop VM (export data by running export_data.sh ip_hadoop)
+	> models/: There are all the files needed to re-create a trained model for machine learning  
+
+
+
+Moreover, there are 5 shells handling data transfer to/from Hadoop and to the server on a VM :
+	> aws_handler.sh
+		It's in charge of installing aws on the server side and configurate it with the good credentials. Becareful, you need to modifiy the path inside :
+		In parameter, you need the username of the remote machine, the ip of the remote machine and the path to the aws cli credentials : "C:/Users/Audric/.aws". DO NOT USE'\', ONLY '/' works
+		To use this script : > aws_handler.sh user_machine_server ip_address_server aws_cred_path
+	
+	> export_data.sh
+		Use to send data to the hadoop VM. It will send every files located into the repertory export/
+		To run it : > export_data.sh ip_hadoop
+
+	> import_data.sh
+		Use to retrieve data from hadoop VM. It will send them to repertory import/
+		To run this script : > import_data.sh ip_hadoop
+
+	> send_data_Vm.sh
+		Use to transfer the repertory serverFiles/ ,models/ and import/ to the server. It will also verify that every imports have been done on the server machine.
+		To run it : > send_data_Vm.sh user_machine_server ip_address_server
+
+	> setup_run.sh
+		Will launch import_data.sh then aws_handler.sh then send_data_Vm.sh to configure the server
+		To run it : > setup_run.sh user_machine_server ip_address_server aws_cred_path
+
+
+How to use them : 
+First, you need to get the aws CLI credentials of your AWS account to be able to use aws services like SQS and bucket S3.
+	Stock them in C:/Users/[Nom]/.aws/credentials.
+Then, read the READ ME in ../mongoDbPart to install and configure mongodb and nodejs instance on this computer.
+
+WARNING : model was to heavy for github, pls use this links to download the files, unzip and copy them into models/
+https://xfl.jp/XGTlvz
+Other way, launch the ../ML/BERT.iypnb file and wait 5 h to get the files needed to recreate the model.
+
+Finally create a VM on which the server will be launched, will be called the server_vm.
+On the server_vm, install ssh server : 
+	>sudo apt-get install openssh-server 
+and run it :
+	>sudo /etc/init.d/ssh start
+Now that the ssh connection can be create, get the ip address of server_vm and the name of a user profil.
+
+
+Then in this repertory, launch: setup_run.sh user_server ip_address_server, it will configure everything needed, becareful you will need the root and user password of the server machine
+Once it's done, go on the server_vm and launch "python DataBaseServer.py" to run the server.
+Finally on this machine, go to rep clientFiles and run "python DataBaseClient.py nom_csv_to_predict"
+Once the prediction is done, you can go on your browser : localhost:3000 to saw the predicted data.
+

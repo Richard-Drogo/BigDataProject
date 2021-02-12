@@ -1,0 +1,1 @@
+For the machine learning, you can use google colab and import the bert.ipynb on it.

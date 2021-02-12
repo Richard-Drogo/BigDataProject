@@ -1,0 +1,1 @@
+scp -P 2222 export/* root@sandbox-hdp.hortonworks.com:/data/ 

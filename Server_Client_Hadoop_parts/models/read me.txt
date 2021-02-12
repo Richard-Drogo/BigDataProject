@@ -1,0 +1,3 @@
+Files needed : config.json, pytorch_model.bon and vocab.txt 
+If there aren't there, use this link to download, unzip and copy them in the directory :
+https://xfl.jp/XGTlvz
